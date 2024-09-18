@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% extends "influencer_base.html" %}
+{% block title %}Find Campaigns{% endblock %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .not-found {
+            text-align: center;
+            font-size: 24px;
+            color: #0a0909; /* Red color for emphasis */
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="not-found">Campaign Not Found.</h1>
+    </div>
+</body>
+</html>
+
+{% endblock %}

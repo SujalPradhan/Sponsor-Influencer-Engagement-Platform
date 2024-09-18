@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+{% extends "influencer_base.html" %}
+
+{% block title %}Find Campaigns{% endblock %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Campaigns</title>
+    <style>
+        /* Global reset and basic styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-form {
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .search-input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 300px;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        .campaign-container {
+            margin-top: 30px;
+        }
+
+        .campaign-box {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .campaign-details h3 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .campaign-details p {
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .ad-button {
+            margin-top: 10px;
+        }
+
+        .ad-requested {
+            background-color: #ffc107;
+            color: #333;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: default;
+            border-radius: 3px;
+        }
+
+        .ad-requested:hover {
+            background-color: #e0a800;
+        }
+
+        .ad-accepted {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: default;
+            border-radius: 3px;
+        }
+
+        .ad-accepted:hover {
+            background-color: #218838;
+        }
+
+        .ad-rejected {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: default;
+            border-radius: 3px;
+        }
+
+        .ad-rejected:hover {
+            background-color: #c82333;
+        }
+
+        /* Colorful enhancements */
+        .search-button, .ad-button button {
+            background-color: #17a2b8;
+            color: white;
+            transition: background-color 0.3s ease;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-button:hover, .ad-button button:hover {
+            background-color: #117a8b;
+        }
+
+        .ad-buttons button {
+            background-color: #00c4da;
+            color: white;
+            transition: background-color 0.3s ease;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .ad-buttons button:hover {
+            background-color: #23617b;
+        }
+
+        .campaign-box {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .campaign-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .campaign-details h3 {
+            color: #007bff;
+        }
+
+        .ad-requested {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .ad-requested:hover {
+            background-color: #e0a800;
+        }
+
+        .ad-accepted {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .ad-accepted:hover {
+            background-color: #218838;
+        }
+
+        .ad-rejected {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .ad-rejected:hover {
+            background-color: #c82333;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="search-container">
+        <h1><b>Find Campaigns</b></h1>
+        <form class="search-form" method="POST" action="{{ url_for('routes.find_campaigns') }}">
+            <input class="search-input" type="text" name="search" placeholder="Search Here">
+            <button class="search-button" type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="campaign-container">
+        <h2>All Campaigns</h2>
+        {% if campaigns %}
+            {% for campaign in campaigns %}
+                {% if campaign.visibility %}
+                    <div class="campaign-box">
+                        <div class="campaign-details">
+                            <h3>{{ campaign.name }}</h3>
+                            <p>Sponsor: {{ campaign.sponsor.company }}</p>
+                            <p>Budget: {{ campaign.budget }}</p>
+                            <p>Description: {{ campaign.description }}</p>
+                            <p>Start Date: {{ campaign.start_date }} | End Date: {{ campaign.end_date }}</p>
+                            
+                            {% if not campaign.ad_requests|selectattr('influencer_id', 'eq', current_user.influencer.influencer_id)|list %}
+                                <div class="ad-buttons">
+                                    <form method="POST" action="{{ url_for('routes.request_ad', campaign_id=campaign.campaign_id) }}">
+                                        <button type="submit">Add an Ad request</button>
+                                    </form>
+                                </div>
+                            {% else %}
+                                <div class="ad-button">
+                                    <button class="ad-requested">Already Requested</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>No campaigns found.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}

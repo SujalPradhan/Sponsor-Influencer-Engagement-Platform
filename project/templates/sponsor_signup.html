@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsor Signup</title>
+    <style>
+        /* user_sign.css */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            margin: 0;
+            height: 100vh;
+            background-color: #f0f8ff; /* Light blue background */
+
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .login {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+            max-width: 90%;
+            text-align: center; /* Center align text */
+        }
+
+        .title {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .text-input {
+            margin-bottom: 15px;
+        }
+
+        .text-input input {
+            width: 100%; /* Full width input */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box; /* Ensures padding is included in width */
+            font-size: 14px;
+        }
+
+        .login-btn {
+            width: 100%; /* Button width set to 100% */
+            padding: 10px;
+            color: white;
+            background: #2ecc71; /* Green color for button */
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #00672b; /* Darker green on hover */
+        }
+
+        .create {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .create a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .create a:hover {
+            text-decoration: underline;
+        }
+
+        .alert-danger {
+            background-color: #fff;
+            color: #ff6347;
+            border: 1px solid #ff6347;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .alert-danger ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .alert-danger li {
+            margin-bottom: 5px;
+        }
+        .error-msg {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<form method="POST" action="/sponsor_signup">
+    <div class="container">
+        <div class="login">
+            <h3 class="title">Sponsor Signup</h3>
+            {% if warnings %}
+            {% for warning in warnings %}
+            <p class="error-msg">Warning! {{warning}}</p>
+            {% endfor %}
+            {% endif %}
+            <div class="text-input">
+                <input type="text" name="Email" placeholder="Email ID" required>
+            </div>
+            <div class="text-input">
+                <input type="text" name="username" placeholder="Username" required>
+            </div>
+            <div class="text-input">
+                <input type="text" name="company" placeholder="Company Name" required>
+            </div>
+            <div class="text-input">
+                <input type="text" name="industry" placeholder="Industry Name" required>
+            </div>
+            <div class="text-input">
+                <input type="password" name="pwd" placeholder="Password" required>
+            </div>
+            <div class="text-input">
+                <input type="password" name="confpwd" placeholder="Confirm Password" required>
+            </div>
+            <button type="submit" class="login-btn">Sign Up</button>
+            <div class="create">
+                <span>Already Registered?</span>
+                <a href="/sponsor_login">Log In</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+</body>
+</html>

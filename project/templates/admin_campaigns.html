@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+{% extends "common_adm.html" %}
+
+{% block title %}Find Campaigns{% endblock %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Campaigns</title>
+    <style>
+        /* Global reset and basic styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-form {
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .search-input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 300px;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        .campaign-container {
+            margin-top: 30px;
+        }
+
+        .campaign-box {
+            position: relative; /* Added for flag button positioning */
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .campaign-details h3 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .campaign-details p {
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .ad-button {
+            margin-top: 10px;
+        }
+
+        .ad-requested {
+            background-color: #ffc107;
+            color: #333;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: default;
+            border-radius: 3px;
+        }
+
+        .ad-requested:hover {
+            background-color: #e0a800;
+        }
+
+        .ad-accepted {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: default;
+            border-radius: 3px;
+        }
+
+        .ad-accepted:hover {
+            background-color: #218838;
+        }
+
+        .ad-rejected {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: default;
+            border-radius: 3px;
+        }
+
+        .ad-rejected:hover {
+            background-color: #c82333;
+        }
+
+        .flagged {
+            border: 2px solid #dc3545;
+        }
+
+        .flag-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .flag-button button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .flag-button button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="search-container">
+        <h1><b>Find Campaigns</b></h1>
+        <form class="search-form" method="POST" action="{{ url_for('routes.admin_campaigns') }}">
+            <input class="search-input" type="text" name="search" placeholder="Search Here">
+            <button class="search-button" type="submit">Search</button>
+        </form>
+    </div>
+
+    <!-- find_campaigns.html -->
+
+    <div class="campaign-container">
+        <h2>All Campaigns</h2>
+        {% if campaigns %}
+            {% for campaign in campaigns %}
+                <div class="campaign-box {% if campaign.flagged %} flagged {% endif %}">
+                    <div class="campaign-details">
+                        <h3>{{ campaign.name }}</h3>
+                        <p>Sponsor: {{ campaign.sponsor.company }}</p>
+                        <p>Budget: {{ campaign.budget }}</p>
+                        <p>Description: {{ campaign.description }}</p>
+                        <p>Start Date: {{ campaign.start_date }} | End Date: {{ campaign.end_date }}</p>
+                        
+                        {% for ad_request in campaign.ad_requests %}
+                            {% if ad_request.influencer_id == current_user.influencer.influencer_id %}
+                                {% if ad_request.status == 'Accepted' %}
+                                    <div class="ad-button">
+                                        <button class="ad-accepted">Accepted</button>
+                                    </div>
+                                {% elif ad_request.status == 'Rejected' %}
+                                    <div class="ad-button">
+                                        <button class="ad-rejected">Rejected</button>
+                                    </div>
+                                {% elif ad_request.status == 'Requested' %}
+                                    <div class="ad-button">
+                                        <button class="ad-requested">Sent request</button>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        
+                        <!-- Flag Button -->
+                        {% if campaign.flagged %}
+                            <div class="flag-button">
+                                <button disabled>Flagged</button>
+                            </div>
+                        {% else %}
+                            <div class="flag-button">
+                                <form method="POST" action="{{ url_for('routes.flag_campaigns', campaign_id=campaign.campaign_id) }}">
+                                    <button type="submit">Flag</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No campaigns found.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}

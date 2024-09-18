@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Influencer Login</title>
+    <link
+      href="/static/_423345b1-a9f0-406e-87d0-67c20d2566d6.jpeg"
+      rel="stylesheet"
+    />
+    <style>
+      /* Reset and basic styling */
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      background-color: #f0f8ff; /* Light blue background */
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .login {
+      background-color: #fff;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      border-radius: 5px;
+      width: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .user-name,
+    .password {
+      background: #e6e6e6;
+      height: 40px;
+      display: flex;
+      width: 60%;
+      align-items: center;
+      border-radius: 10px;
+      padding: 0 15px;
+      margin: 5px 0;
+    }
+
+    .user-name input,
+    .password input {
+      background: none;
+      border: none;
+      outline: none;
+      width: 100%;
+      height: 100%;
+      margin-left: 10px;
+    }
+
+    .login-btn {
+      width: 68%;
+      padding: 10px;
+      color: white;
+      background: green;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .login-btn:hover {
+                background: #00672b; /* Darker green on hover */
+            }
+
+    .create {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      bottom: 50px;
+    }
+
+    a {
+      font-size: 15px;
+      color: #9a9a9a;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      text-decoration: none;
+    }
+
+    a.forgot {
+      margin-top: 15px;
+    }
+
+    .alert-danger {
+      background-color: white;
+    }
+    .error-msg {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+  </head>
+
+  <body>
+    <form method="POST" action="/influencer_login">
+      <div class="container">
+        <div class="login">
+          <h3 class="title">Influencer Login</h3>
+          {% if warnings %}
+          {% for warning in warnings %}
+          <p class="error-msg">Warning! {{warning}}</p>
+          {% endfor %}
+          {% endif %}
+          <div class="user-name">
+            <input type="text" name="username" placeholder="Username" />
+          </div>
+          <div class="password">
+            <input type="password" name="pwd" placeholder="Password" />
+          </div>
+
+          <button class="login-btn">LOGIN</button>
+          
+          <div class="create">
+            <a href="/influencer_signup">Create Your Account</a>
+          </div>
+        </div>
+      </div>
+    </form>
+    {% if warnings %}
+    <div class="alert-danger">
+      <ul>
+        {% for warning in warnings %}
+        <li>{{ warning }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </body>
+</html>

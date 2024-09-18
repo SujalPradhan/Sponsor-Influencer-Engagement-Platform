@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BrandFluence</title>
+    <style>
+        /* Reset and base styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #b8c3cf; /* Light grey background */
+            color: #343a40; /* Dark text color */
+        }
+        
+        /* Header styles */
+        header {
+            background-color: #1a4a7e; /* Red header background */
+            color: #fff; /* White text color */
+            padding: 10px 0;
+            text-align: center;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .logo a {
+            color: #fff; /* White text color for logo */
+            font-size: 1.8em;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .nav {
+            float: right;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-right: 15px;
+        }
+        
+        .dropbtn {
+            background-color: #333; /* Dark grey button background */
+            color: #fff; /* White button text color */
+            padding: 12px 18px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .dropbtn:hover {
+            background-color: #555; /* Darker grey on hover */
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff; /* White dropdown background */
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+        }
+        
+        .dropdown-content a {
+            color: #333; /* Dark text color for dropdown links */
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f0f0f0; /* Light grey background on hover */
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        /* Main content section */
+        .main-content {
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #1a4a7e; /* Blue header color */
+        }
+        
+        p {
+            font-size: 1.2em;
+        }
+        
+        /* Footer styles */
+        footer {
+            background-color: #1a4a7e; /* Blue footer background */
+            color: #fff; /* White text color for footer */
+            text-align: center;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="{{ url_for('routes.index') }}">
+                    BrandFluence
+                </a>
+            </div>
+            <nav class="nav">
+                <div class="dropdown">
+                    <button class="dropbtn">Login</button>
+                    <div class="dropdown-content">
+                        <a href="/sponsor_login">Sponsor Login</a>
+                        <a href="/influencer_login">Influencer Login</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">Sign Up</button>
+                    <div class="dropdown-content">
+                        <a href="/sponsor_signup">Sponsor Sign Up</a>
+                        <a href="/influencer_signup">Influencer Sign Up</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content section -->
+    <div class="main-content">
+        <div class="container">
+            <h1>Welcome to BrandFluence</h1>
+            <p>The platform that connects sponsors and influencers together.</p>
+            <!-- Add more content as needed -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 BrandFluence. All rights reserved.</p>
+    </footer>
+</body>
+</html>

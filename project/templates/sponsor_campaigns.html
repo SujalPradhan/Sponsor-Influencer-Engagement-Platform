@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+{% extends "sponsor_base.html" %}
+
+{% block title %}Sponsor Campaigns{% endblock %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaigns</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Additional CSS styles specific to this template -->
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #4a90e2;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-align: center;
+            text-decoration: underline;
+        }
+
+        .campaign {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .campaign p {
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        .campaign button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .campaign button:hover {
+            background-color: #357ab8;
+            transform: scale(1.05);
+        }
+
+        /* Form styles */
+        #addCampaignForm {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #addCampaignForm label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #addCampaignForm input,
+        #addCampaignForm textarea,
+        #addCampaignForm select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        #addCampaignForm button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #addCampaignForm button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Flagged campaign styles */
+        .flagged {
+            background-color: #ffc107;
+            color: #333;
+            border: 1px solid #e0a800;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .flagged p {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .flagged button {
+            background-color: #ccc;
+            color: #333;
+            cursor: not-allowed;
+            transition: background-color 0.3s ease;
+        }
+
+        .flagged button:hover {
+            background-color: #bbb;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .campaign {
+                padding: 15px;
+            }
+
+            .campaign button,
+            #addCampaignForm button {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Sponsor Campaigns</h1>
+
+    <h2>Ongoing Campaigns</h2>
+    {% if campaigns %}
+    {% for campaign in campaigns %}
+    {% if campaign.progress < 100 %}
+        {% if campaign.flagged %}
+            <div class="flagged">
+                <p>{{ campaign.name }} | Flagged Campaign</p>
+                <p>This campaign has been flagged and cannot be interacted with.</p>
+                <button disabled>Interact</button>
+            </div>
+        {% else %}
+            <div class="campaign">
+                <p>{{ campaign.name }} | Progress:
+                    {% if campaign.progress < 0 %}
+                        Not Started
+                    {% elif campaign.progress > 99.99 %}
+                        Completed
+                    {% else %}
+                        {{ campaign.progress }}%
+                    {% endif %}
+                </p>
+                <div><a href="{{ url_for('routes.view_ads', campaign_id=campaign.campaign_id) }}"><button>View Ads</button></a></div>
+                <p>Description: {{ campaign.description }}</p>
+                <p>Budget: ₹{{ campaign.budget }} | Visibility: {% if campaign.visibility %}Public{% else %}Private{% endif %}</p>
+                <!-- Form for editing campaign -->
+                <form method="POST" action="{{ url_for('routes.edit_campaign', campaign_id=campaign.campaign_id) }}">
+                    <button type="submit" {% if campaign.flagged %} disabled {% endif %}>Edit</button>
+                </form>
+                <br>
+                <!-- Form for deleting campaign -->
+                <form method="POST" action="{{ url_for('routes.campaign_details', campaign_id=campaign.campaign_id) }}">
+                    <button type="submit" name="action" value="delete" {% if campaign.flagged %} disabled {% endif %}>Delete</button>
+                </form>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+    {% else %}
+        <p>No ongoing campaigns.</p>
+    {% endif %}
+
+    <h2>Add New Campaign</h2>
+    <button id="showFormBtn" class="campaign button">Add New Campaign</button>
+
+    <form id="addCampaignForm" method="POST" action="{{ url_for('routes.sponsor_campaigns') }}">
+        <label for="name">Campaign Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+        <br>
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" required>
+        <br>
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" required>
+        <br>
+        <label for="budget">Budget:</label>
+        <input type="number" step="0.01" id="budget" name="budget" required>
+        <br>
+        <label for="visibility">Visibility:</label>
+        <select id="visibility" name="visibility" required>
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select>
+        <br>
+        <br>
+        <button type="submit">Add Campaign</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('showFormBtn').addEventListener('click', function() {
+        document.getElementById('addCampaignForm').style.display = 'block';
+    });
+</script>
+</body>
+</html>
+{% endblock %}

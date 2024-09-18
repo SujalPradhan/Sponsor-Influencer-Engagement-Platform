@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+{% extends "sponsor_base.html" %}
+
+{% block title %}Sponsor Profile{% endblock %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsor Profile</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #4a90e2;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-align: center;
+            text-decoration: underline;
+        }
+
+        .campaign, .ad-request {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .campaign p, .ad-request p {
+            margin: 15px 0;
+            font-size: 1rem;
+        }
+
+        .campaign button, .ad-request button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .campaign button:hover, .ad-request button:hover {
+            background-color: #357ab8;
+            transform: scale(1.05);
+        }
+
+        .flagged {
+            background-color: #ff6f61;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-top: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Status colors */
+        .status-accepted {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .status-rejected {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .status-requested {
+            color: #ff8c00;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            color: #6f42c1;
+            font-weight: bold;
+        }
+
+        .campaign-button {
+            display: inline-block;
+            background-color: #ffdd57;
+            color: #333;
+            border: none;
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .campaign-button:hover {
+            background-color: #ffd700;
+            transform: scale(1.05);
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .status-accepted-badge {
+            background-color: #28a745;
+        }
+
+        .status-rejected-badge {
+            background-color: #dc3545;
+        }
+
+        .status-requested-badge {
+            background-color: #ff8c00;
+        }
+
+        .status-pending-badge {
+            background-color: #6f42c1;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .campaign, .ad-request {
+                padding: 15px;
+            }
+
+            .campaign button, .ad-request button, .campaign-button {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Welcome, Sponsor {{ user.username }}</h1>
+
+    <h2>All Campaigns:</h2>
+    {% if campaigns %}
+        {% for campaign in campaigns %}
+            <div class="campaign">
+                {% if campaign.flagged %}
+                    <div class="flagged">FLAGGED</div>
+                {% endif %}
+                <p><strong>{{ campaign.name }}</strong></p>
+                <p><b>Progress:</b>
+                    {% if campaign.progress < 0 %}
+                        <span class="status-badge status-pending-badge">Not Started</span>
+                    {% elif campaign.progress > 99.99 %}
+                        <span class="status-badge status-accepted-badge">Completed</span>
+                    {% else %}
+                        <span class="status-badge status-requested-badge">{{ campaign.progress|round(2) }}%</span>
+                    {% endif %}
+                </p>
+                <p><b>Start Date:</b> {{ campaign.start_date }} | <b>End Date:</b> {{ campaign.end_date }}</p>
+                <p><b>Description:</b> {{ campaign.description }}</p>
+                <p><b>Budget:</b> ₹{{ campaign.budget }} | <b>Visibility:</b> {{ 'Public' if campaign.visibility else 'Private' }}</p>
+
+                <h3>Ad Requests:</h3>
+                {% if campaign.ad_requests %}
+                    {% for ad_request in campaign.ad_requests %}
+                        <div class="ad-request">
+                            <p><b>Ad Influencer:</b> {{ ad_request.influencer.name }}</p>
+                            <p><b>Ad Requirements:</b> {{ ad_request.requirements }}</p>
+                            <p><b>Ad Payment Amount:</b> ₹{{ ad_request.payment_amount }}</p>
+                            <p><b>Ad Messages:</b> {{ ad_request.messages }}</p>
+                            <p><b>Status:</b>
+                                {% if ad_request.status == 'Accepted' %}
+                                    <span class="status-badge status-accepted-badge">Accepted</span>
+                                {% elif ad_request.status == 'Rejected' %}
+                                    <span class="status-badge status-rejected-badge">Rejected</span>
+                                    {% elif ad_request.status == 'Requested' %}
+                                    <span class="status-badge status-requested-badge">Influencer has sent a request</span>
+                                    <br>
+                                    <div>
+                                        <a href="{{ url_for('routes.give_ad', ad_request_id=ad_request.ad_request_id) }}" class="campaign-button">Add an Ad request</a>
+                                        <a href="{{ url_for('routes.reject_ad', ad_request_id=ad_request.ad_request_id) }}" class="campaign-button" style="background-color: #dc3545; color: white;">Reject Ad Request</a>
+                                    </div>
+
+                                {% elif ad_request.status == 'Pending' %}
+                                    <span class="status-badge status-pending-badge">Pending</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No ad requests for this campaign.</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No active campaigns.</p>
+    {% endif %}
+</div>
+</body>
+</html>
+{% endblock %}

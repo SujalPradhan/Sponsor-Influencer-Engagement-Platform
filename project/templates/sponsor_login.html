@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsor Login</title>
+    <link rel="stylesheet" href="/static/_423345b1-a9f0-406e-87d0-67c20d2566d6.jpeg">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            background-color: #f0f8ff; /* Light blue background */
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login {
+            background-color: rgba(255, 255, 255, 0.8); /* Adjusted opacity for better readability */
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            max-width: 90%;
+            text-align: center; /* Center align text */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Added box-shadow for depth */
+        }
+
+        .title {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .user-name,
+        .password {
+            background: #e6e6e6;
+            height: 40px;
+            display: flex;
+            width: 100%; /* Adjusted width for responsiveness */
+            align-items: center;
+            border-radius: 10px;
+            padding: 0 15px;
+            margin: 10px 0; /* Increased margin for better spacing */
+        }
+
+        .user-name input,
+        .password input {
+            background: none;
+            border: none;
+            outline: none;
+            width: 100%;
+            height: 100%;
+            margin-left: 10px;
+        }
+
+        ::placeholder {
+            color: #9a9a9a;
+        }
+
+        .login-btn {
+            width: 100%; /* Button width set to 100% */
+            padding: 10px;
+            color: white;
+            background: #2ecc71; /* Green color for button */
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #00672b; /* Darker shade of green on hover */
+        }
+
+        .create {
+            margin-top: 15px;
+        }
+
+        .create a {
+            font-size: 15px;
+            color: #9a9a9a;
+            text-decoration: none;
+        }
+
+        .create a:hover {
+            text-decoration: underline;
+        }
+
+        .alert-danger {
+            background-color: #fff;
+            color: #ff6347;
+            border: 1px solid #ff6347;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .alert-danger ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .alert-danger li {
+            margin-bottom: 5px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 50% 50%;
+                grid-template-areas: "design login";
+            }
+
+            .design {
+                display: block;
+            }
+        }
+        .error-msg {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="POST" action="/sponsor_login">
+        <div class="container">
+            <div class="login">
+                <h3 class="title">Sponsor Login</h3>
+                {% if warnings %}
+                {% for warning in warnings %}
+                <p class="error-msg">Warning! {{warning}}</p>
+                {% endfor %}
+                {% endif %}
+                <div class="user-name">
+                    <input type="text" name="username" placeholder="Username" required />
+                </div>
+                <div class="password">
+                    <input type="password" name="pwd" placeholder="Password" required />
+                </div>
+                <button type="submit" class="login-btn">LOGIN</button>
+                <div class="create">
+                    <a href="/sponsor_signup">Create Your Account</a>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- Include any warnings here if necessary -->
+</body>
+</html>

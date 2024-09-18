@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+{% extends "influencer_base.html" %}
+
+{% block title %}Influencer Profile{% endblock %}
+
+{% block content %}
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .campaign, .request, .accepted-request {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .campaign:hover, .request:hover, .accepted-request:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .campaign p, .request p, .accepted-request p {
+            margin: 5px 0;
+        }
+
+        .accepted-request {
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+        }
+
+        .accepted-request p {
+            color: #3c763d;
+        }
+
+        .request-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin-right: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+
+        .request-button:hover {
+            background-color: #0056b3;
+        }
+
+        .negotiate-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .negotiate-input {
+            margin-right: 10px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .negotiate-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+
+        .negotiate-button:hover {
+            background-color: #218838;
+        }
+
+        /* Colorful enhancements */
+        .container {
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            color: #007bff;
+        }
+
+        .campaign, .request, .accepted-request {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .campaign:hover, .request:hover, .accepted-request:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .campaign p, .request p, .accepted-request p {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .accepted-request {
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+        }
+
+        .accepted-request p {
+            color: #3c763d;
+        }
+
+        .request-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin-right: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+
+        .request-button:hover {
+            background-color: #218838;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+
+    <div class="container">
+        <h1>Welcome Influencer {{ user.username }}</h1>
+
+        <h2>Active Campaigns:</h2>
+        {% set shown_campaigns = [] %}
+        {% if campaigns %}
+            {% for campaign in campaigns %}
+                {% if campaign.campaign not in shown_campaigns %}
+                    {% set _ = shown_campaigns.append(campaign.campaign) %}
+                    <div class="campaign">
+                        <p>Sponsor: {{ campaign.campaign.sponsor.company }}</p>
+
+                        <p>{{ campaign.campaign.name }} |  Start Date: {{ campaign.campaign.start_date }} | End Date: {{ campaign.campaign.end_date }}</p>
+                        <p>Description: {{ campaign.campaign.description }}</p>
+                        <p>Budget: {{ campaign.payment_amount }} | Visibility: {{ 'Public' if campaign.campaign.visibility else 'Private' }}</p>
+                        <div class="progress-bar-container">
+                            {% if campaign.progress < 0 %}
+                                <div class="progress-bar">Not Started</div>
+                            {% elif campaign.progress > 99.99 %}
+                                <div class="progress-bar">Completed</div>
+                            {% else %}
+                                <div>{{ campaign.progress|round(2) }}%</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>No active campaigns.</p>
+        {% endif %}
+
+        <div>
+            <h3>Accepted Ad Requests:</h3>
+            {% if accepted_requests %}
+                {% for request in accepted_requests %}
+                    <div class="accepted-request">
+                        <p>Sponsor: {{ request.campaign.sponsor.company }}</p>
+
+                        <p>{{ request.campaign.name }} | Start Date: {{ request.campaign.start_date }} | End Date: {{ request.campaign.end_date }}</p>
+                        <p>Campaign Description: {{ request.campaign.description }}</p>
+                        <p>Campaign Budget: {{ request.campaign.budget }} | Visibility: {{ 'Public' if request.campaign.visibility else 'Private' }}</p>
+                        <p>Ad Description: {{ request.requirements }}</p>
+                        <p>Ad Payment Amount: {{ request.payment_amount }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No accepted ad requests.</p>
+            {% endif %}
+        </div>
+
+        <div>
+            <h2>Pending Ad Requests:</h2>
+            {% if requests %}
+                {% for request in requests %}
+                    <div class="request">
+                        <p>Sponsor: {{ request.campaign.sponsor.company }}</p>
+                        <p>{{ request.campaign.name }} |  Start Date: {{ request.campaign.start_date }} | End Date: {{ request.campaign.end_date }}</p>
+                        <p>Campaign Description: {{ request.campaign.description }}</p>
+                        <p>Campaign Budget: {{ request.campaign.budget }} | Visibility: {{ 'Public' if request.campaign.visibility else 'Private' }}</p>
+                        <p>Ad Description: {{ request.requirements }}</p>
+                        <p>Ad Payment Amount: {{ request.payment_amount }}</p>
+
+                        <form method="POST" action="{{ url_for('routes.handle_ad_request') }}">
+                            <input type="hidden" name="ad_request_id" value="{{ request.ad_request_id }}">
+                            <button type="submit" name="action" value="accept" class="request-button">Accept</button>
+                            <button type="submit" name="action" value="reject" class="request-button">Reject</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No pending ad requests.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

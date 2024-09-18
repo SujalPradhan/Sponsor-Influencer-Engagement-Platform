@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% extends "common_adm.html" %}
+{% block title %}Statistics{% endblock %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Statistics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .dashboard-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .dashboard-section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            margin-top: 40px;
+            border-radius: 8px;
+            width: 80%;
+            margin: 40px auto 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Statistics</h1>
+
+    <div class="dashboard-container">
+        <div class="dashboard-section">
+            <h2>User Status Distribution</h2>
+            <img src="{{ url_for('routes.plot_users') }}" alt="User Status">
+        </div>
+
+        <div class="dashboard-section">
+            <h2>Campaigns Distribution</h2>
+            <img src="{{ url_for('routes.plot_campaigns') }}" alt="Campaign Distribution">
+        </div>
+
+        <div class="dashboard-section">
+            <h2>Ad Requests Status Distribution</h2>
+            <img src="{{ url_for('routes.plot_ad_requests') }}" alt="Ad Requests Distribution">
+        </div>
+    </div>
+
+
+</body>
+</html>
+{% endblock %}

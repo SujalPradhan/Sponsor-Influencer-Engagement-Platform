@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+{% extends "common_adm.html" %}
+{% block title %}Find Influencers{% endblock %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Influencers</title>
+    <style>
+        /* Global reset and basic styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-form {
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .search-input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 300px;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        .influencers-container {
+            margin-top: 30px;
+        }
+
+        .influencer-box {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .influencer-details h3 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .influencer-details p {
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .flag-button, .flagged-text {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .flag-button {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .flagged-text {
+            background-color: #dddddd;
+            color: #333;
+            border: 1px solid #ff0000; /* Red border for flagged influencer */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="search-container">
+        <h1><b>Find Influencers</b></h1>
+        <form class="search-form" method="POST" action="{{ url_for('routes.admin_influencer') }}">
+            <input class="search-input" type="text" name="search" placeholder="Search Here">
+            <button class="search-button" type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="influencers-container">
+        <h2>All Influencers</h2>
+        {% if influencers %}
+            {% for influencer in influencers %}
+                <div class="influencer-box {% if influencer.user.flagged %}flagged{% endif %}">
+                    <div class="influencer-details">
+                        <h3>{{ influencer.name }}</h3>
+                        <p>Category: {{ influencer.category }}</p>
+                        <p>Niche: {{ influencer.niche }}</p>
+                        <p>Followers: {{ influencer.followers }}</p>
+                        <br>
+                        {% if influencer.user.flagged %}
+                            <div class="flagged-text">Flagged</div>
+                        {% else %}
+                            <form method="POST" action="{{ url_for('routes.flag_influencer', influencer_id=influencer.influencer_id) }}">
+                                <button type="submit" class="flag-button">Flag</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No influencers found.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}

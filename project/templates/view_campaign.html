@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ campaign.name }}</title>
+    <style>
+        /* Reset default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ad {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .ad p {
+            margin-bottom: 10px;
+        }
+
+        .ad strong {
+            font-weight: bold;
+            margin-right: 5px;
+            color: #555;
+        }
+
+        .find-influencer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .find-influencer button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .find-influencer button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ campaign.name }}</h1>
+        <h2>Ads</h2>
+        {% if ads %}
+            {% for ad in ads %}
+                <div class="ad">
+                    <p><strong>Influencer:</strong> {{ ad.influencer.name }}</p>
+                    <p><strong>Message:</strong> {{ ad.messages }}</p>
+                    <p><strong>Requirements:</strong> {{ ad.requirements }} followers</p>
+                    <p><strong>Payment Amount:</strong> ₹{{ ad.payment_amount }}</p>
+                    <p><strong>Status:</strong> {{ ad.status }}</p>
+                    <!-- Add additional ad details as needed -->
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No ads yet.</p>
+        {% endif %}
+    </div>
+
+    <div class="container find-influencer">
+        <p>Find an Influencer to create an Ad request</p>
+        <br>
+        <a href="/find_influencer"><button>Find an Influencer!</button></a>
+    </div>
+</body>
+</html>

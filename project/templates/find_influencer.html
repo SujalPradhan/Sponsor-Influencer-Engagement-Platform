@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+{% extends "sponsor_base.html" %}
+{% block title %}Find Influencers{% endblock %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Influencers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Additional CSS styles specific to this template -->
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #4a90e2;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-form {
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .search-input {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 300px;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+
+        .search-button {
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .search-button:hover {
+            background-color: #357ab8;
+            transform: scale(1.05);
+        }
+
+        .influencers-container {
+            margin-top: 30px;
+        }
+
+        .influencer-box {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .influencer-details h3 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .influencer-details p {
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .add-request-button {
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .add-request-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="search-container">
+        <h1><b>Find Influencers</b></h1>
+        <form class="search-form" method="POST" action="{{ url_for('routes.find_influencer') }}">
+            <input class="search-input" type="text" name="search" placeholder="Search Here">
+            <button class="search-button" type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="influencers-container">
+        <h2>All Influencers</h2>
+        {% if influencers %}
+            {% for influencer in influencers %}
+                <div class="influencer-box">
+                    <div class="influencer-details">
+                        <h3>{{ influencer.name }}</h3>
+                        <p>Platforms: {{ influencer.niche }}</p>
+                        <p>Followers: {{ influencer.followers }}</p>
+                        <a class="add-request-button" href="{{ url_for('routes.add_ad_request', influencer_id=influencer.influencer_id) }}">Add an Ad Request</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No influencers found.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}

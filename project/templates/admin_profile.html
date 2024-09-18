@@ -1,0 +1,187 @@
+{% extends "common_adm.html" %}
+
+{% block content %}
+<head>
+    <title>Admin Profile</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #F0F5F9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    
+        .home-page {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        
+        .title {
+            font-size: 2.5em;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.5em;
+            color: #555555;
+        }
+
+        .section {
+            margin-top: 20px;
+        }
+
+        .section h2 {
+            font-size: 1.8em;
+            color: #333;
+        }
+
+        .section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .section table, .section th, .section td {
+            border: 1px solid #ddd;
+        }
+
+        .section th, .section td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .section th {
+            background-color: #f4f4f4;
+        }
+
+        .unflag-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .unflag-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+
+<div class="home-page">
+    <h1 class="title">Welcome Admin</h1>
+
+    <div class="section">
+        <h2>Ongoing Campaigns:</h2>
+        {% if ongoing_campaigns %}
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Visibility</th>
+                </tr>
+                {% for campaign in ongoing_campaigns %}
+                <tr>
+                    <td>{{ campaign.name }}</td>
+                    <td>{{ campaign.start_date }}</td>
+                    <td>{{ campaign.end_date }}</td>
+                    <td>{{ 'Public' if campaign.visibility else 'Private' }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No ongoing campaigns.</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Flagged Sponsors:</h2>
+        {% if flagged_sponsors %}
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Action</th>
+                </tr>
+                {% for sponsor in flagged_sponsors %}
+                {% if sponsor.user.flagged %}
+
+                <tr>
+                    <td>{{ sponsor.user.username }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('routes.unflag_user', user_id=sponsor.user.user_id) }}">
+                            <button type="submit" class="unflag-button">Unflag</button>
+                        </form>
+                    </td>
+                </tr>
+                {%endif%}
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No flagged sponsors.</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Flagged Influencers:</h2>
+        {% if flagged_influencers %}
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Action</th>
+                </tr>
+                {% for influencer in flagged_influencers %}
+                {% if influencer.user.flagged %}
+                <tr>
+                    <td>{{ influencer.user.username }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('routes.unflag_user', user_id=influencer.user.user_id) }}">
+                            <button type="submit" class="unflag-button">Unflag</button>
+                        </form>
+                    </td>
+                </tr>
+                {%endif%}
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No flagged influencers.</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Flagged Campaigns:</h2>
+        {% if flagged_campaigns %}
+            <table>
+                <tr>
+                    <th>Campagin Name</th>
+                    <th>Action</th>
+                </tr>
+                {% for campaign in flagged_campaigns %}
+                {% if campaign.flagged %}
+                <tr>
+                    <td>{{ campaign.name }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('routes.unflag_campaigns', campaign_id=campaign.campaign_id) }}">
+                            <button type="submit" class="unflag-button">Unflag</button>
+                        </form>
+                    </td>
+                </tr>
+                {%endif%}
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No flagged influencers.</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

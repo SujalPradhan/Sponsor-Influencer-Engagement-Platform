@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+{% extends "sponsor_base.html" %}
+
+{% block title %}Give Ad{% endblock %}
+
+{% block content %}
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <div class="container">
+        <h1>Give Ad for Campaign: {{ ad_request.campaign.name }}</h1>
+        <h2>Influencer: {{ ad_request.influencer.name }}</h2>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="requirements">Requirements:</label>
+                <textarea id="requirements" name="requirements" class="form-control" rows="2" placeholder="Enter requirements"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="budget">Payment Amount:</label>
+                <input type="number" id="budget" name="payment_amount" class="form-control" placeholder="Enter budget" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+                <label for="messages">Messages:</label>
+                <textarea id="messages" name="messages" class="form-control" rows="2" placeholder="Enter additional messages"></textarea>
+            </div>
+    
+            <button type="submit" class="btn btn-primary">Send Request</button>
+        </form>
+    </div>
+{% endblock %}

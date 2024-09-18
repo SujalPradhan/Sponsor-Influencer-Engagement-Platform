@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Campaign</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-size: 1rem; /* Adjust font size for consistency */
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Campaign</h1>
+
+        <form method="POST" action="{{ url_for('routes.edit_campaign', campaign_id=campaign.campaign_id) }}">
+            <label for="name">Campaign Name:</label>
+            <input type="text" id="name" name="name" value="{{ campaign.name }}" required>
+            <br>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required>{{ campaign.description }}</textarea>
+            <br>
+            <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" name="start_date" value="{{ campaign.start_date.strftime('%Y-%m-%d') }}" required>
+            <br>
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" name="end_date" value="{{ campaign.end_date.strftime('%Y-%m-%d') }}" required>
+            <br>
+            <label for="budget">Budget:</label>
+            <input type="number" step="0.01" id="budget" name="budget" value="{{ campaign.budget }}" required>
+            <br>
+            <label for="visibility">Visibility:</label>
+            <select id="visibility" name="visibility" required>
+                <option value="public" {% if campaign.visibility %}selected{% endif %}>Public</option>
+                <option value="private" {% if not campaign.visibility %}selected{% endif %}>Private</option>
+            </select>
+
+            <br><br>
+            <button type="submit">Save Changes</button>
+        </form>
+
+        <a href="{{ url_for('routes.campaign_details', campaign_id=campaign.campaign_id) }}">Cancel</a>
+    </div>
+</body>
+</html>
